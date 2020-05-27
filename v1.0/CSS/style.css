@@ -1,0 +1,6 @@
+#screen {
+    border: 1px solid #CCC;
+    image-rendering: pixelated;
+    width: 400px;
+    height: 400px;
+}
