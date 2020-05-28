@@ -6,6 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link rel="stylesheet" href="CSS/style.css">
+
+        <script src='/v1.0/node_modules/socket.io-client/dist/socket.io.js'></script>
     </head>
 
     <body>
@@ -23,8 +25,16 @@
             const screen = document.getElementById('screen');
             renderScreen(screen, game, requestAnimationFrame);
 
-            game.addPlayer({playerID: 'evandro', playerX: 0, playerY: 0});
-            game.addFruit({fruitID: 'fruit1', fruitX: 5, fruitY: 5});
+            const socket = io();
+            socket.on('connect', () => {
+                const playerID = socket.id;
+                console.log(`Player connected on client with id: ${playerID}`);
+            });
+
+            socket.on('setup', () => {
+                console.log(`Receiving "setup" event from server`);
+                console.log(setup);
+            });
         </script>
     </body>
 </html> 
