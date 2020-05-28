@@ -19,14 +19,22 @@ sockets.on('connection', (socket) => {
     const playerID = socket.id;
     console.log(`Player connected on server with id ${playerID}`);
 
+    game.start();
     game.addPlayer({playerID: playerID});
+
+    socket.on('movePlayer', (command) => {
+        command.playerID = playerID;
+        command.type = 'movePlayer';
+
+        game.movePlayer(command);
+    });
 
     socket.emit('setup', game.state);
 
     socket.on('disconnect', () => {
-        console.log(`Disconnecting -> ${playerID}`);
         game.removePlayer({playerID});
-    })
+    });
+
 });
 
 server.listen(3000, () => {

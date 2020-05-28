@@ -2,7 +2,8 @@ function createKeyboardListener(document) {
     document.addEventListener('keydown', handleKeydown);
 
     const state = {
-        observers: []
+        observers: [],
+        playerID: null
     };
 
     function subscribe(observerFunction){
@@ -15,10 +16,15 @@ function createKeyboardListener(document) {
         }
     }
 
+    function registerPlayerID(playerID){
+        state.playerID = playerID;
+    }
+
     function handleKeydown(event){
         const keyPressed = event.key;
         const command = {
-            playerID: 'evandro',
+            type: 'movePlayer',
+            playerID: state.playerID,
             keyPressed
         };
 
@@ -26,7 +32,8 @@ function createKeyboardListener(document) {
     }
 
     return {
-        subscribe
+        subscribe,
+        registerPlayerID
     };
 }
 

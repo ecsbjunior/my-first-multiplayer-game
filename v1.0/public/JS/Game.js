@@ -10,6 +10,11 @@ function createGame() {
 
     const observers = [];
 
+    function start(){
+        const frequency = 2000;
+        setInterval(addFruit, frequency);
+    }
+
     function subscribe(observerFunction){
         observers.push(observerFunction);
     }
@@ -44,10 +49,18 @@ function createGame() {
     }
 
     function removePlayer(command){
-        delete state.players[command.playerID];
+        const playerID = command.playerID;
+
+        delete state.players[playerID];
+
+        notifyAll({
+            type: 'removePlayer',
+            playerID: playerID
+        });
     }
 
     function movePlayer(command) {
+        notifyAll(command);
         const acceptedMoves = {
             ArrowUp: player => {
                 player.y = Math.max(player.y - 1, 0);
@@ -73,14 +86,32 @@ function createGame() {
 
     //FRUIT
     function addFruit(command){
-        state.fruits[command.fruitID] = {
-            x: command.fruitX,
-            y: command.fruitY
+        const fruitID = command ? command.fruitID : Math.floor(Math.random() * 1000000);
+        const fruitX = command ? command.fruitX : Math.floor(Math.random() * state.screen.width);
+        const fruitY = command ? command.fruitY : Math.floor(Math.random() * state.screen.height);
+
+        state.fruits[fruitID] = {
+            x: fruitX,
+            y: fruitY
         };
+
+        notifyAll({
+            type: 'addFruit',
+            fruitID: fruitID,
+            fruitX: fruitX,
+            fruitY: fruitY
+        });
     }
 
     function removeFruit(command){
-        delete state.fruits[command.fruitID];
+        const fruitID = command.fruitID;
+        
+        delete state.fruits[fruitID];
+
+        notifyAll({
+            type: 'removeFruit',
+            fruitID: fruitID
+        });
     }
 
     function checkForFruitCollision(playerID){
@@ -95,6 +126,7 @@ function createGame() {
     }
 
     return {
+        start,
         subscribe,
         setState,
         addPlayer,
