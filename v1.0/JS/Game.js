@@ -1,7 +1,11 @@
 function createGame() {
     const state = {
         players: {},
-        fruits: {}
+        fruits: {},
+        screen: {
+            width: 10,
+            height: 10
+        }
     };
 
     //PLAYER
@@ -22,13 +26,13 @@ function createGame() {
                 player.y = Math.max(player.y - 1, 0);
             },
             ArrowDown: player => {
-                player.y = Math.min(player.y + 1, screen.height - 1);
+                player.y = Math.min(player.y + 1, state.screen.height - 1);
             },
             ArrowLeft: player => {
                 player.x = Math.max(player.x - 1, 0);
             },
             ArrowRight: player => {
-                player.x = Math.min(player.x + 1, screen.width - 1);
+                player.x = Math.min(player.x + 1, state.screen.width - 1);
             }
         };
         
@@ -54,7 +58,7 @@ function createGame() {
 
     function checkForFruitCollision(playerID){
         const player = state.players[playerID];
-        for(fruitID in state.fruits){
+        for(const fruitID in state.fruits){
             const fruit = state.fruits[fruitID];
             if(player.x === fruit.x && player.y === fruit.y){
                 console.log(`Collision between ${playerID} and ${fruitID}`);
