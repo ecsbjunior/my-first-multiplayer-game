@@ -10,16 +10,25 @@ const game = createGame();
 
 app.use(express.static('public'));
 
-game.addPlayer({playerID: 'evandro', playerX: 0, playerY: 0});
-game.addFruit({fruitID: 'fruit1', fruitX: 5, fruitY: 5});
+game.subscribe((command) => {
+    console.log(`Emiting ${command.type}`);
+    sockets.emit(command.type, command);
+});
 
 sockets.on('connection', (socket) => {
     const playerID = socket.id;
     console.log(`Player connected on server with id ${playerID}`);
 
+    game.addPlayer({playerID: playerID});
+
     socket.emit('setup', game.state);
+
+    socket.on('disconnect', () => {
+        console.log(`Disconnecting -> ${playerID}`);
+        game.removePlayer({playerID});
+    })
 });
 
-server.listen(5500, () => {
-    console.log(`> Server listening on port: 5500`);
+server.listen(3000, () => {
+    console.log(`> Server listening on port: 3000`);
 });

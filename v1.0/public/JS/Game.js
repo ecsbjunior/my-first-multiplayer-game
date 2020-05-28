@@ -8,12 +8,39 @@ function createGame() {
         }
     };
 
+    const observers = [];
+
+    function subscribe(observerFunction){
+        observers.push(observerFunction);
+    }
+
+    function notifyAll(command){
+        for(const observerFunction of observers){
+            observerFunction(command);
+        }
+    }
+
+    function setState(newState){
+        Object.assign(state, newState);
+    }
+
     //PLAYER
     function addPlayer(command){
+        const playerID = command.playerID;
+        const playerX = 'playerX' in command ? command.playerX : Math.floor(Math.random() * state.screen.width);
+        const playerY = 'playerY' in command ? command.playerY : Math.floor(Math.random() * state.screen.height);
+
         state.players[command.playerID] = {
-            x: command.playerX,
-            y: command.playerY
+            x: playerX,
+            y: playerY
         };
+
+        notifyAll({
+            type: 'addPlayer',
+            playerID: playerID,
+            playerX: playerX,
+            playerY: playerY
+        });
     }
 
     function removePlayer(command){
@@ -68,6 +95,8 @@ function createGame() {
     }
 
     return {
+        subscribe,
+        setState,
         addPlayer,
         removePlayer,
         addFruit,

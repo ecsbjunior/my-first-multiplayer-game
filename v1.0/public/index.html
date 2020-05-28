@@ -7,7 +7,7 @@
 
         <link rel="stylesheet" href="CSS/style.css">
 
-        <script src='/v1.0/node_modules/socket.io-client/dist/socket.io.js'></script>
+        <script src='/socket.io/socket.io.js'></script>
     </head>
 
     <body>
@@ -30,10 +30,12 @@
                 const playerID = socket.id;
                 console.log(`Player connected on client with id: ${playerID}`);
             });
-
-            socket.on('setup', () => {
-                console.log(`Receiving "setup" event from server`);
-                console.log(setup);
+            socket.on('setup', (state) => {
+                game.setState(state);
+            });
+            socket.on('addPlayer', (command) => {
+                console.log(`Receiving ${command.type} -> ${command.playerID}`)
+                game.addPlayer(command);
             });
         </script>
     </body>
