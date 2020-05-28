@@ -1,6 +1,33 @@
+body {
+    background-color: #1f1f1f;
+    height: 100vh;
+}
+
+.col-6 {
+    max-width: 100%!important;
+    flex: 0 0 100%!important;
+}
+
+.jumbotron {
+    color: white;
+    backdrop-filter: blur(8px);
+    background-color: transparent;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.507);
+    margin-bottom: 0px;
+}
+
+.display-4 {
+    margin-bottom: 40px;
+}
+
 #screen {
     border: 1px solid #CCC;
     image-rendering: pixelated;
-    width: 400px;
-    height: 400px;
+    width: 800px;
+    height: 800px;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }

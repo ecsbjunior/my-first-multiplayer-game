@@ -3,7 +3,7 @@ function renderScreen(screen, game, requestAnimationFrame, currentPlayerID) {
     const currentPlayer = game.state.players[currentPlayerID];
 
     //clear game's screen
-    context.clearRect(0, 0, 10, 10);
+    context.clearRect(0, 0, game.state.screen.width, game.state.screen.height);
 
     //Render players in screen
     for(const playerID in game.state.players) {
